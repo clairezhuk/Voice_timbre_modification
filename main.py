@@ -9,8 +9,9 @@ def main():
     paths = {
         "hubert": "voice_clone_project/models/hubert_base.pt",
         "rmvpe": "voice_clone_project/models/model_0.pt",
-        "ddsp": "voice_clone_project/models/ddsp_default.pt",
-        "hifigan": "voice_clone_project/models/nsf_hifigan.pt"
+        "ddsp": "voice_clone_project/models/model_80000.pt",
+        "hifigan": "voice_clone_project/models/nsf_hifigan.pt",
+        "ddsp_config": "voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
 
     # 1. Екстракція
@@ -18,7 +19,7 @@ def main():
     content, f0 = extractor.extract_features("voice_clone_project/data/input/test_audio.wav")
     
     # 2. Синтез (використовуємо дефолтний голос)
-    generator = DDSPGenerator(paths["ddsp"], device)
+    generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], device)
     raw_audio = generator.generate(content, f0)
     
     # 3. Вокодер

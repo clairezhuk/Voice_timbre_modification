@@ -1,7 +1,10 @@
+import os
+import sys
 import torch
 import librosa
 import numpy as np
-from voice_clone_project.rmvpe.src.inference import RMVPE
+
+from DDSP_SVC_6.encoder.rmvpe.inference import RMVPE
 
 class FeatureExtractor:
     def __init__(self, hubert_path, rmvpe_path, device="cuda"):
@@ -21,7 +24,7 @@ class FeatureExtractor:
         
         audio_pt = torch.from_numpy(audio).unsqueeze(0).to(self.device)
         with torch.no_grad():
-            units = self.hubert.extract_features(audio_pt, padding_mask=None)["x"]
+            units = self.hubert.extract_features(audio_pt, padding_mask=None)[0]
             content = units.transpose(1, 2)
 
         f0 = self.rmvpe.infer_from_audio(audio, sample_rate=16000, device=self.device)
