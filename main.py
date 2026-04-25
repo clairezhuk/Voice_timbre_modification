@@ -16,11 +16,12 @@ def main():
 
     # 1. Екстракція
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
-    content, f0 = extractor.extract_features("voice_clone_project/data/input/test_audio.wav")
-    
+    content, f0, audio = extractor.extract_features("voice_clone_project/data/input/test_audio.wav")
+        
+        
     # 2. Синтез (використовуємо дефолтний голос)
     generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], device)
-    raw_audio = generator.generate(content, f0)
+    raw_audio = generator.generate(content, f0, audio)
     
     # 3. Вокодер
     vocoder = Vocoder(paths["hifigan"], device)

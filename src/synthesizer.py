@@ -2,6 +2,9 @@ import os
 import sys
 import yaml
 import torch
+import torch.nn.functional as F
+import librosa
+import numpy as np
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 ddsp_svc_path = os.path.join(project_root, "DDSP_SVC_6")
@@ -34,12 +37,12 @@ class DDSPGenerator:
             sampling_rate=config.data.sampling_rate or 44100,
             block_size=config.data.block_size or 512,
             win_length=config.model.win_length or 1024,
-            n_unit=256, 
+            n_unit=768, 
             n_spk=config.model.n_spk or 1,
             use_pitch_aug=config.model.use_pitch_aug or False,
             out_dims=config.model.out_dims or 128,
-            n_layers=config.model.n_layers or 6,
-            n_chans=config.model.n_chans or 512
+            n_layers=10,
+            n_chans=1024
         )
         
         ckpt = torch.load(model_path, map_location=self.device)
@@ -47,11 +50,20 @@ class DDSPGenerator:
         
         return model.to(self.device).eval()
 
-    def generate(self, content, f0, shift=0):
+    def generate(self, content, f0, audio, shift=0):
         f0_shifted = f0 * (2 ** (shift / 12))
         f0_pt = torch.from_numpy(f0_shifted).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        target_len = f0_pt.shape[1]
         
+        volume = librosa.feature.rms(y=audio, frame_length=1024, hop_length=256)[0]
+        volume = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
+        volume_pt = torch.from_numpy(volume).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+
+        # Fix: Interpolate time dimension directly, then transpose
+        content = F.interpolate(content, size=target_len, mode='linear')
+        content = content.transpose(1, 2) 
+
         with torch.no_grad():
-            audio = self.model(content, f0_pt, infer_step=20, method='euler')
+            generated_audio = self.model(content, f0_pt, volume_pt, infer_step=20, method='euler')
             
-        return audio.squeeze().cpu().numpy()
+        return generated_audio.squeeze().cpu().numpy()

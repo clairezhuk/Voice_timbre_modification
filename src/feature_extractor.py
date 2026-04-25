@@ -29,4 +29,4 @@ class FeatureExtractor:
 
         f0 = self.rmvpe.infer_from_audio(audio, sample_rate=16000, device=self.device)
         
-        return content, f0
+        return content, f0, audio
