@@ -8,7 +8,7 @@ def main():
     device = "cuda"
     paths = {
         "hubert": "voice_clone_project/models/hubert_base.pt",
-        "rmvpe": "voice_clone_projec/models/rmvpe.pt",
+        "rmvpe": "voice_clone_project/models/model_0.pt",
         "ddsp": "voice_clone_project/models/ddsp_default.pt",
         "hifigan": "voice_clone_project/models/nsf_hifigan.pt"
     }
