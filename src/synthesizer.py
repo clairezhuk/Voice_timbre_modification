@@ -52,20 +52,27 @@ class DDSPGenerator:
         
         return model.to(self.device).eval()
 
-    def generate(self, content, f0, audio, shift=0):
-        f0_shifted = f0 * (2 ** (shift / 12))
-        f0_pt = torch.from_numpy(f0_shifted).float().unsqueeze(0).unsqueeze(-1).to(self.device)
-        target_len = f0_pt.shape[1]
+    def generate(self, content, f0, audio_44k, shift=0):
+        hop_size = 512 # Стандартний крок для 44100 Гц
+        target_len = len(audio_44k) // hop_size
         
-        volume = librosa.feature.rms(y=audio, frame_length=1024, hop_length=256)[0]
+        # 1. Підганяємо F0 (висоту тону)
+        f0_shifted = f0 * (2 ** (shift / 12))
+        f0_shifted = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(f0_shifted)), f0_shifted)
+        f0_pt = torch.from_numpy(f0_shifted).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        
+        # 2. Підганяємо Volume (гучність)
+        volume = librosa.feature.rms(y=audio_44k, frame_length=hop_size, hop_length=hop_size)[0]
         volume = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
         volume_pt = torch.from_numpy(volume).float().unsqueeze(0).unsqueeze(-1).to(self.device)
 
+        # 3. Підганяємо Content (ознаки Hubert)
         content = F.interpolate(content, size=target_len, mode='linear')
         content = content.transpose(1, 2) 
 
         with torch.no_grad():
-            mel = self.model(content, f0_pt, volume_pt, vocoder=self.vocoder, infer_step=20, method='euler')
+            # infer_step=50 дасть набагато чистіший звук без артефактів
+            mel = self.model(content, f0_pt, volume_pt, vocoder=self.vocoder, infer_step=50, method='euler')
             generated_audio = self.vocoder.infer(mel, f0_pt)
             
         return generated_audio.squeeze().cpu().numpy()
