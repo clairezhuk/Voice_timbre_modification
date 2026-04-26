@@ -13,8 +13,8 @@ def main():
         "ddsp_config": "voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
     SHIFT = 10
-    INPUT_PATH = "voice_clone_project/data/input/test2_clean.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/output/output_test2_cl_{SHIFT}_tr1_1.wav"
+    INPUT_PATH = "voice_clone_project/data/input/test1_clean.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/output/output_test1_cl_{SHIFT}_tr4.wav"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
