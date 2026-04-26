@@ -53,25 +53,23 @@ class DDSPGenerator:
         return model.to(self.device).eval()
 
     def generate(self, content, f0, audio_44k, shift=0):
-        hop_size = 512 # Стандартний крок для 44100 Гц
+        hop_size = 512
         target_len = len(audio_44k) // hop_size
         
-        # 1. Підганяємо F0 (висоту тону)
         f0_shifted = f0 * (2 ** (shift / 12))
-        f0_shifted = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(f0_shifted)), f0_shifted)
-        f0_pt = torch.from_numpy(f0_shifted).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        f0_pt = torch.from_numpy(f0_shifted).float().unsqueeze(0).unsqueeze(1)
+        f0_pt = F.interpolate(f0_pt, size=target_len, mode='nearest')
+        f0_pt = f0_pt.transpose(1, 2).to(self.device)
         
-        # 2. Підганяємо Volume (гучність)
-        volume = librosa.feature.rms(y=audio_44k, frame_length=hop_size, hop_length=hop_size)[0]
-        volume = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
-        volume_pt = torch.from_numpy(volume).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        volume = librosa.feature.rms(y=audio_44k, frame_length=1024, hop_length=hop_size)[0]
+        volume_pt = torch.from_numpy(volume).float().unsqueeze(0).unsqueeze(1)
+        volume_pt = F.interpolate(volume_pt, size=target_len, mode='nearest')
+        volume_pt = volume_pt.transpose(1, 2).to(self.device)
 
-        # 3. Підганяємо Content (ознаки Hubert)
-        content = F.interpolate(content, size=target_len, mode='linear')
-        content = content.transpose(1, 2) 
+        content = F.interpolate(content, size=target_len, mode='linear', align_corners=False)
+        content = content.transpose(1, 2).to(self.device)
 
         with torch.no_grad():
-            # infer_step=50 дасть набагато чистіший звук без артефактів
             mel = self.model(content, f0_pt, volume_pt, vocoder=self.vocoder, infer_step=50, method='euler')
             generated_audio = self.vocoder.infer(mel, f0_pt)
             

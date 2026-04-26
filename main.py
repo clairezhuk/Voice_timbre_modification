@@ -6,7 +6,7 @@ import soundfile as sf
 def main():
     device = "cuda"
     paths = {
-        "hubert": "voice_clone_project/models/hubert_base.pt",
+        "hubert": "voice_clone_project/models/contentvec768l12.pt",
         "rmvpe": "voice_clone_project/models/model_0.pt",
         "ddsp": "voice_clone_project/models/model_80000.pt",
         "hifigan": "voice_clone_project/models/nsf_hifigan/model",
@@ -15,14 +15,14 @@ def main():
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
-    content, f0, audio = extractor.extract_features("voice_clone_project/data/input/test2.wav")
+    content, f0, audio = extractor.extract_features("voice_clone_project/data/input/test_audio.wav")
         
 
     # Sintez + Vocoder
     generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], paths["hifigan"], device)
     final_audio = generator.generate(content, f0, audio)
 
-    sf.write("voice_clone_project/data/output/output_test.wav", final_audio.flatten(), 44100)
+    sf.write("voice_clone_project/data/output/output_test1.wav", final_audio.flatten(), 44100)
    
     # Evaluation
     evaluator = Evaluator()
