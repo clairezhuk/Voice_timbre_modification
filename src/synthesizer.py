@@ -52,35 +52,33 @@ class DDSPGenerator:
         
         return model.to(self.device).eval()
 
-    def generate(self, content, f0, audio_44k, shift=0):
+    def generate(self, content, f0, audio_44k, shift=12):
         hop_size = 512
         target_len = len(audio_44k) // hop_size
         
-        # 1. F0 + Shift + Маска тиші
+        # F0 + Shift
         f0_shifted = f0 * (2 ** (shift / 12))
+        f0_tensor = torch.from_numpy(f0_shifted).float().unsqueeze(0).unsqueeze(1)
+        uv_mask = (f0_tensor == 0).float()
         
-        time_16k = np.linspace(0, 1, len(f0_shifted))
-        time_44k = np.linspace(0, 1, target_len)
-        uv_mask = (f0_shifted == 0).astype(float)
+        # Linear F0 for smooth pitch, Nearest mask for sharp silence
+        f0_aligned = F.interpolate(f0_tensor, size=target_len, mode='linear', align_corners=False)
+        uv_aligned = F.interpolate(uv_mask, size=target_len, mode='nearest')
+        f0_aligned[uv_aligned > 0.5] = 0.0
         
-        f0_aligned = np.interp(time_44k, time_16k, f0_shifted)
-        uv_aligned = np.interp(time_44k, time_16k, uv_mask) > 0.5
-        f0_aligned[uv_aligned] = 0.0
+        f0_pt = f0_aligned.transpose(1, 2).to(self.device)
         
-        f0_pt = torch.from_numpy(f0_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
-        
-        # 2. Гучність
+        # Volume (Raw RMS to keep consonants intact)
         volume = librosa.feature.rms(y=audio_44k, frame_length=1024, hop_length=hop_size)[0]
-        volume_aligned = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
-        volume_pt = torch.from_numpy(volume_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        volume_tensor = torch.from_numpy(volume).float().unsqueeze(0).unsqueeze(1)
+        volume_aligned = F.interpolate(volume_tensor, size=target_len, mode='linear', align_corners=False)
+        volume_pt = volume_aligned.transpose(1, 2).to(self.device)
 
-        # 3. Content
+        # Content
         content = F.interpolate(content, size=target_len, mode='linear', align_corners=False)
         content = content.transpose(1, 2).to(self.device)
 
         with torch.no_grad():
-            # Передаємо vocoder і кажемо return_wav=True. 
-            # Модель сама правильно згенерує mel і пропустить його через vocoder.
             generated_audio = self.model(
                 content, f0_pt, volume_pt, 
                 vocoder=self.vocoder, 

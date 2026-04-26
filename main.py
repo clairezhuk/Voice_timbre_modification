@@ -12,8 +12,9 @@ def main():
         "hifigan": "voice_clone_project/models/nsf_hifigan/model",
         "ddsp_config": "voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
-    INPUT_PATH = "voice_clone_project/data/input/test1_clean.wav"
-    OUTPUT_PATH = "voice_clone_project/data/output/output_test1_cl_12.wav"
+    SHIFT = 10
+    INPUT_PATH = "voice_clone_project/data/input/test2_clean.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/output/output_test2_cl_{SHIFT}_tr1_1.wav"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
@@ -22,7 +23,7 @@ def main():
 
     # Sintez + Vocoder
     generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], paths["hifigan"], device)
-    final_audio = generator.generate(content, f0, audio, shift=12)
+    final_audio = generator.generate(content, f0, audio, shift=SHIFT)
 
     sf.write(OUTPUT_PATH, final_audio.flatten(), 44100)
    
