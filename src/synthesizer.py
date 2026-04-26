@@ -12,6 +12,7 @@ if ddsp_svc_path not in sys.path:
     sys.path.insert(0, ddsp_svc_path)
 
 from DDSP_SVC_6.reflow.vocoder import Unit2Wav
+from DDSP_SVC_6.reflow.vocoder import Vocoder # Додаємо імпорт вокодера
 
 class DictToDotDict(dict):
     def __getattr__(self, key):
@@ -23,9 +24,12 @@ class DictToDotDict(dict):
         return value
 
 class DDSPGenerator:
-    def __init__(self, model_path, config_path, device="cuda"):
+    # Додаємо шлях до hifigan в ініціалізацію
+    def __init__(self, model_path, config_path, hifigan_path, device="cuda"):
         self.device = device
         self.model = self._load_model(model_path, config_path)
+        # Ініціалізуємо NSF-HiFiGAN
+        self.vocoder = Vocoder("nsf-hifigan", hifigan_path, device)
 
     def _load_model(self, model_path, config_path):
         with open(config_path, 'r', encoding='utf-8') as f:
@@ -59,11 +63,14 @@ class DDSPGenerator:
         volume = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
         volume_pt = torch.from_numpy(volume).float().unsqueeze(0).unsqueeze(-1).to(self.device)
 
-        # Fix: Interpolate time dimension directly, then transpose
         content = F.interpolate(content, size=target_len, mode='linear')
         content = content.transpose(1, 2) 
 
         with torch.no_grad():
-            generated_audio = self.model(content, f0_pt, volume_pt, infer_step=20, method='euler')
+            # 1. Передаємо vocoder=self.vocoder, щоб модель сама отримала ddsp_mel (128 channels)
+            mel = self.model(content, f0_pt, volume_pt, vocoder=self.vocoder, infer_step=20, method='euler')
+            
+            # 2. Вокодер перетворює згенерований Мел у фінальну аудіохвилю
+            generated_audio = self.vocoder.infer(mel, f0_pt)
             
         return generated_audio.squeeze().cpu().numpy()
