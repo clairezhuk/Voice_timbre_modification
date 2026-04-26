@@ -1,0 +1,50 @@
+
+--- GROUP: I_cry (Reference: I_cry_0.wav) ---
+Test File: I_cry_1_melody.wav
+  F0 Pearson:  0.6345
+  RMS Pearson: 0.3423
+  WER:         0.7143
+
+Test File: I_cry_2_melody_rythm.wav
+  F0 Pearson:  0.1874
+  RMS Pearson: 0.4070
+  WER:         0.2857
+
+Test File: I_cry_3_noise.wav
+  F0 Pearson:  0.2534
+  RMS Pearson: 0.4657
+  WER:         0.7143
+
+
+--- GROUP: papperony (Reference: papperony_0.wav) ---
+Test File: papperony_1_close.wav
+  F0 Pearson:  0.7206
+  RMS Pearson: 0.2818
+  WER:         0.3750
+
+Test File: papperony_2_f.wav
+  F0 Pearson:  0.7205
+  RMS Pearson: 0.1702
+  WER:         1.0000
+
+Test File: papperony_3_text.wav
+  F0 Pearson:  0.7204
+  RMS Pearson: 0.3859
+  WER:         1.0000
+
+
+--- GROUP: please_dont (Reference: please_dont_0.wav) ---
+Test File: please_dont_1_intonation.wav
+  F0 Pearson:  0.0001
+  RMS Pearson: -0.0555
+  WER:         1.3636
+
+Test File: please_dont_2_mumling.wav
+  F0 Pearson:  -0.0038
+  RMS Pearson: 0.3458
+  WER:         0.9091
+
+Test File: please_dont_3_creap.wav
+  F0 Pearson:  0.0084
+  RMS Pearson: 0.1696
+  WER:         0.1818
