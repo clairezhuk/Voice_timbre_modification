@@ -1,6 +1,5 @@
 from src.feature_extractor import FeatureExtractor
 from src.synthesizer import DDSPGenerator
-from src.vocoder import Vocoder
 from src.evaluator import Evaluator
 import soundfile as sf
 
@@ -14,20 +13,16 @@ def main():
         "ddsp_config": "voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
 
-    # 1. Екстракція
+    # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
-    content, f0, audio = extractor.extract_features("voice_clone_project/data/input/test_audio.wav")
+    content, f0, audio = extractor.extract_features("voice_clone_project/data/input/test2.wav")
         
 
-    # 2. Синтез (використовуємо дефолтний голос)
+    # Sintez + Vocoder
     generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], paths["hifigan"], device)
-    raw_audio = generator.generate(content, f0, audio)
+    final_audio = generator.generate(content, f0, audio)
     
-    # 3. Вокодер
-    vocoder = Vocoder(paths["hifigan"], device)
-    final_audio = vocoder.render(raw_audio)
-    
-    # 4. Оцінка
+    # Evaluation
     evaluator = Evaluator()
     error = evaluator.check_pitch_accuracy(f0, f0) # Тест на ідентичність
     
