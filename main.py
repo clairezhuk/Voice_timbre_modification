@@ -21,13 +21,16 @@ def main():
     # Sintez + Vocoder
     generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], paths["hifigan"], device)
     final_audio = generator.generate(content, f0, audio)
-    
+
+    sf.write("voice_clone_project/data/output/output_test.wav", final_audio.flatten(), 44100)
+   
     # Evaluation
     evaluator = Evaluator()
-    error = evaluator.check_pitch_accuracy(f0, f0) # Тест на ідентичність
-    
-    sf.write("voice_clone_project/data/output/output_test.wav", final_audio.flatten(), 16000)
-    print(f"Test completed. Pitch error: {error:.4f}")
+    content_output, f0_output, audio_output = extractor.extract_features("voice_clone_project/data/output/output_test.wav")
+    error = evaluator.check_pitch_accuracy(f0, f0_output) 
+    quality =  evaluator.estimate_quality(audio_output)
+
+    print(f"Test completed. Pitch error: {error:.4f}, quality: {quality:.4f}")
 
 if __name__ == "__main__":
     main()
