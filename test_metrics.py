@@ -24,8 +24,8 @@ def align_arrays(ref, gen):
 
 def main():
     device = "cuda"
-    base_dir = "voice_clone_project/data/tests_for_metrics"
-    output_file = "voice_clone_project/metric_test.txt"
+    base_dir = "voice_clone_project/data/tests_synthetic_1"
+    output_file = "voice_clone_project/metric_test_synthetic_1_fix2.txt"
     
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",
@@ -35,34 +35,36 @@ def main():
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
     evaluator = Evaluator(device)
     
-    groups = {
-        "I_cry": ["I_cry_0.wav", "I_cry_1_melody.wav", "I_cry_2_melody_rythm.wav", "I_cry_3_noise.wav"],
-        "papperony": ["papperony_0.wav", "papperony_1_close.wav", "papperony_2_f.wav", "papperony_3_text.wav"],
-        "please_dont": ["please_dont_0.wav", "please_dont_1_intonation.wav", "please_dont_2_mumling.wav", "please_dont_3_creap.wav"]
-    }
+    groups = ["speaking", "singing"]
+    suffixes = [
+        "1_pitch_shifted.wav",
+        "2_noisy.wav",
+        "3_choppy.wav",
+        "4_muffled.wav"
+    ]
     
     results = []
     
-    for group_name, files in groups.items():
-        ref_file = files[0]
+    for group in groups:
+        ref_file = f"{group}_0_baseline.wav"
         ref_path = os.path.join(base_dir, ref_file)
         
         _, f0_ref, audio_ref = extractor.extract_features(ref_path)
         
-        group_header = f"\n--- GROUP: {group_name} (Reference: {ref_file}) ---"
-        print(group_header)
-        results.append(group_header)
+        header = f"\n--- GROUP: {group} (Reference: {ref_file}) ---"
+        print(header)
+        results.append(header)
         
-        for test_file in files[1:]:
+        for suffix in suffixes:
+            test_file = f"{group}_{suffix}"
             test_path = os.path.join(base_dir, test_file)
+            
+            if not os.path.exists(test_path):
+                continue
             
             _, f0_gen, audio_gen = extractor.extract_features(test_path)
             
             f0_ref_aligned, f0_gen_aligned = align_arrays(f0_ref, f0_gen)
-            
-            rms_ref = librosa.feature.rms(y=audio_ref)[0]
-            rms_gen = librosa.feature.rms(y=audio_gen)[0]
-            rms_ref_aligned, rms_gen_aligned = align_arrays(rms_ref, rms_gen)
             
             f0_pearson = evaluator.get_f0_pearson(f0_ref_aligned, f0_gen_aligned)
             rms_pearson = evaluator.get_rms_pearson(audio_ref, audio_gen) 

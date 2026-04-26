@@ -4,6 +4,9 @@ from scipy.stats import pearsonr
 import whisper
 import jiwer
 import warnings
+from fastdtw import fastdtw
+from scipy.spatial.distance import euclidean
+from scipy.stats import pearsonr
 
 # Вимикаємо зайві попередження від Whisper
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -11,33 +14,38 @@ warnings.filterwarnings("ignore", category=UserWarning)
 class Evaluator:
     def __init__(self, device="cuda"):
         self.device = device
-        # Завантажуємо базову модель Whisper (її достатньо для перевірки фонем англійською/іншими мовами)
-        # Вона "важить" близько 140 МБ і працює дуже швидко
         print("Loading Whisper model for evaluation...")
         self.whisper_model = whisper.load_model("base", device=self.device)
 
     def get_f0_pearson(self, f0_ref, f0_gen):
-        """1. Метрика Інтонації (Мелодії)"""
-        # Обрізаємо до мінімальної довжини
-        min_len = min(len(f0_ref), len(f0_gen))
-        ref = f0_ref[:min_len]
-        gen = f0_gen[:min_len]
+        # Відкидаємо тишу
+        ref_voiced = f0_ref[f0_ref > 0]
+        gen_voiced = f0_gen[f0_gen > 0]
         
-        # Рахуємо кореляцію ТІЛЬКИ там, де є голос (f0 > 0 в обох масивах), 
-        # інакше нулі (тиша) сильно викривлять статистику
-        mask = (ref > 0) & (gen > 0)
-        
-        if np.sum(mask) < 2: # Якщо збігів немає або масив надто малий
+        if len(ref_voiced) < 2 or len(gen_voiced) < 2:
             return 0.0
             
-        corr, _ = pearsonr(ref[mask], gen[mask])
+        # 1. Переводимо Герци в логарифмічну шкалу (MIDI)
+        # Це робить зсув по висоті лінійним (просто додавання константи)
+        ref_midi = librosa.hz_to_midi(ref_voiced)
+        gen_midi = librosa.hz_to_midi(gen_voiced)
         
-        # Pearson може повернути NaN, якщо масив складається з однакових значень
+        # 2. Нормалізація (Zero-mean)
+        # Робимо DTW "сліпим" до загальної висоти голосу (вирішує проблему pitch_shift)
+        ref_norm = ref_midi - np.mean(ref_midi)
+        gen_norm = gen_midi - np.mean(gen_midi)
+        
+        # 3. DTW тепер порівнює тільки ФОРМУ мелодії
+        distance, path = fastdtw(ref_norm.reshape(-1, 1), gen_norm.reshape(-1, 1), dist=euclidean)
+        
+        aligned_ref = np.array([ref_norm[i] for i, j in path])
+        aligned_gen = np.array([gen_norm[j] for i, j in path])
+        
+        corr, _ = pearsonr(aligned_ref, aligned_gen)
         return 0.0 if np.isnan(corr) else corr
 
     def get_rms_pearson(self, audio_ref, audio_gen, sr=44100):
         """2. Метрика Динаміки (Гучність/Експресія)"""
-        # Витягуємо гучність (RMS)
         rms_ref = librosa.feature.rms(y=audio_ref)[0]
         rms_gen = librosa.feature.rms(y=audio_gen)[0]
         
@@ -54,11 +62,9 @@ class Evaluator:
         import librosa
         import jiwer
         
-        # Завантажуємо аудіо через librosa (одразу в 16000 Гц, як того вимагає Whisper)
         ref_audio, _ = librosa.load(ref_audio_path, sr=16000)
         gen_audio, _ = librosa.load(gen_audio_path, sr=16000)
         
-        # Розпізнаємо текст напряму з масивів numpy
         ref_result = self.whisper_model.transcribe(ref_audio, language=language)
         ref_text = ref_result["text"].strip().lower()
         

@@ -1,0 +1,43 @@
+
+--- GROUP: speaking (Reference: speaking_0_baseline.wav) ---
+Test File: speaking_1_pitch_shifted.wav
+  F0 Pearson:  0.3618
+  RMS Pearson: 0.9988
+  WER:         0.6842
+
+Test File: speaking_2_noisy.wav
+  F0 Pearson:  0.4980
+  RMS Pearson: 0.9968
+  WER:         0.2632
+
+Test File: speaking_3_choppy.wav
+  F0 Pearson:  0.2476
+  RMS Pearson: 0.7671
+  WER:         0.2632
+
+Test File: speaking_4_muffled.wav
+  F0 Pearson:  0.3030
+  RMS Pearson: 0.9941
+  WER:         0.5789
+
+
+--- GROUP: singing (Reference: singing_0_baseline.wav) ---
+Test File: singing_1_pitch_shifted.wav
+  F0 Pearson:  0.2459
+  RMS Pearson: 0.9975
+  WER:         1.5000
+
+Test File: singing_2_noisy.wav
+  F0 Pearson:  0.2152
+  RMS Pearson: 0.9832
+  WER:         1.0000
+
+Test File: singing_3_choppy.wav
+  F0 Pearson:  0.2981
+  RMS Pearson: 0.3605
+  WER:         1.0000
+
+Test File: singing_4_muffled.wav
+  F0 Pearson:  0.4009
+  RMS Pearson: 0.9463
+  WER:         1.0000
