@@ -6,4 +6,3 @@ my_model/base_pretrained_diff.pt
 *.pt
 models/nsf_hifigan/model
 models/.cache
-DDSP
