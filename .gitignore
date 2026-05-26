@@ -1,6 +1,9 @@
 my_model/base_pretrained_diff.pt
-DDSP
-rmvpe.rar
+*.rar
 *.pyc
 *.pyo
 *.pyd
+*.pt
+models/nsf_hifigan/model
+models/.cache
+DDSP
