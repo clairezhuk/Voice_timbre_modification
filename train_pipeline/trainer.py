@@ -11,10 +11,10 @@ import numpy as np
 class Trainer:
     def __init__(self, config):
         self.config = config
-        self.ddsp_dir = os.path.abspath("../DDSP")
+        self.ddsp_dir = os.path.abspath("./DDSP")
         self.config_yaml = os.path.abspath(config["paths"]["ddsp_yaml"])
         self.checkpoint_dir = os.path.abspath(config["paths"]["checkpoint_dir"])
-        self.val_dir = os.path.abspath("../data/dataset/val")
+        self.val_dir = os.path.abspath("./data/dataset/val")
         self.log_file = config["paths"].get("current_log_file")
         self.python_exe = sys.executable 
         

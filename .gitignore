@@ -7,3 +7,10 @@ my_model/base_pretrained_diff.pt
 models/nsf_hifigan/model
 models/.cache
 *.tar.gz
+model 
+data/dataset/train/aug_mel
+data/dataset/train/aug_vol
+data/dataset/train/f0
+data/dataset/train/mel
+data/dataset/train/units
+data/dataset/train/volume

@@ -8,11 +8,11 @@ from logger import log_validation_metrics, init_csv
 CONFIG = {
     "device": "cuda",
     "paths": {
-        "train_dir": "../data/dataset/train/audio",
-        "val_dir": "../data/dataset/val",
-        "checkpoint_dir": "../my_model",
-        "ddsp_yaml": "../DDSP/config.yaml",
-        "log_dir": "../training_log"
+        "train_dir": "./data/dataset/train",
+        "val_dir": "./data/dataset/val",
+        "checkpoint_dir": "./my_model",
+        "ddsp_yaml": "./DDSP/config.yaml",
+        "log_dir": "./training_log"
     },
     "training": {
         "log_index": 1

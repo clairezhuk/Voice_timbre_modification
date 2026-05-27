@@ -13,11 +13,11 @@ data:
   f0_max: 800
   f0_min: 65
   sampling_rate: 44100
-  train_path: ../data/dataset/train/audio
-  valid_path: ../data/dataset/val
+  train_path: "C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/data/dataset/train"
+  valid_path: "C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/data/dataset/train" #val
 device: cuda
 env:
-  expdir: ../my_model
+  expdir: "C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model"
   gpu_id: 0
 infer:
   method: dpm-solver
@@ -37,7 +37,7 @@ train:
   cache_device: cpu
   cache_fp16: true
   decay_step: 50000
-  epochs: 100000
+  epochs: 2 #100000
   gamma: 0.5
   interval_force_save: 10000
   interval_log: 100
@@ -48,5 +48,5 @@ train:
   save_opt: false
   weight_decay: 0
 vocoder:
-  ckpt: ../models/nsf_hifigan/model
+  ckpt: 'C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/models/nsf_hifigan/model'
   type: nsf-hifigan
