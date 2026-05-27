@@ -13,7 +13,7 @@ data:
   f0_max: 800
   f0_min: 65
   sampling_rate: 44100
-  train_path: ../data/dataset/train
+  train_path: ../data/dataset/train/audio
   valid_path: ../data/dataset/val
 device: cuda
 env:
