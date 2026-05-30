@@ -32,14 +32,14 @@ model:
   win_length: 2048
 train:
   amp_dtype: fp32
-  batch_size: 1
+  batch_size: 2
   cache_all_data: true
   cache_device: cpu
   cache_fp16: true
   decay_step: 50000
-  epochs: 2 #100000
+  epochs: 100000
   gamma: 0.5
-  interval_force_save: 1000 #10000
+  interval_force_save: 500 #10000
   interval_log: 100
   interval_val: 200
   lambda_ddsp: 1

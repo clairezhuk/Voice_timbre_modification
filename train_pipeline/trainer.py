@@ -14,7 +14,7 @@ class Trainer:
         self.ddsp_dir = os.path.abspath("./DDSP")
         self.config_yaml = os.path.abspath(config["paths"]["ddsp_yaml"])
         self.checkpoint_dir = os.path.abspath(config["paths"]["checkpoint_dir"])
-        self.val_dir = os.path.abspath("./data/dataset/val")
+        self.val_dir = os.path.abspath("./data/dataset/val/audio")
         self.log_file = config["paths"].get("current_log_file")
         self.python_exe = sys.executable 
         
@@ -33,7 +33,7 @@ class Trainer:
             
             try:
                 while process.poll() is None:
-                    time.sleep(20) 
+                    time.sleep(60) # TIME BETWEEN LOGGING
                     
                     current_checkpoints = set(glob.glob(os.path.join(self.checkpoint_dir, "model_*.pt")))
                     new_checkpoints = current_checkpoints - known_checkpoints
@@ -97,7 +97,8 @@ class Trainer:
                 wer_all.append(evaluator.get_wer(wav_path, output_wav))
                 os.remove(output_wav)
 
-        log_validation_metrics(self.log_file, current_step, f0_all, rms_all, wer_all)
+        file_names = [os.path.basename(f) for f in val_files]
+        log_validation_metrics(self.log_file, current_step, file_names, f0_all, rms_all, wer_all)
         print(f"[EVAL] Step {current_step} done. Avg WER: {np.mean(wer_all):.4f}")
         
         del extractor, evaluator

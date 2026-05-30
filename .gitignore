@@ -14,3 +14,4 @@ data/dataset/train/f0
 data/dataset/train/mel
 data/dataset/train/units
 data/dataset/train/volume
+my_model/logs
