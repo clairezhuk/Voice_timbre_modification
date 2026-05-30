@@ -8,7 +8,6 @@ from fastdtw import fastdtw
 from scipy.spatial.distance import euclidean
 from scipy.stats import pearsonr
 
-# Вимикаємо зайві попередження від Whisper
 warnings.filterwarnings("ignore", category=UserWarning)
 
 class Evaluator:
@@ -18,7 +17,6 @@ class Evaluator:
         self.whisper_model = whisper.load_model("base", device=self.device)
 
     def get_f0_pearson(self, f0_ref, f0_gen):
-        # Відкидаємо тишу
         ref_voiced = f0_ref[f0_ref > 0]
         gen_voiced = f0_gen[f0_gen > 0]
         

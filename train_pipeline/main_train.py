@@ -27,8 +27,8 @@ def main():
     init_csv(log_file)
     CONFIG["paths"]["current_log_file"] = log_file
 
-    print("=== STEP 1: Preprocessing ===")
-    preprocess_dataset(CONFIG)
+    #print("=== STEP 1: Preprocessing ===")
+    #preprocess_dataset(CONFIG)
 
     print("\n=== STEP 2: Training ===")
     trainer = Trainer(CONFIG)

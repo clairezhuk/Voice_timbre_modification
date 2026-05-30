@@ -1,0 +1,48 @@
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 0 |  99/278 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 8.03 | lr: 0.0002 | loss: 5.284 | time: 0:00:12.5 | step: 100
+epoch: 0 | 199/278 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 10.58 | lr: 0.0002 | loss: 8.666 | time: 0:00:21.9 | step: 200
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 0 |  99/278 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 8.47 | lr: 0.0002 | loss: 3.589 | time: 0:00:11.8 | step: 300
+epoch: 0 | 199/278 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 10.16 | lr: 0.0002 | loss: 3.336 | time: 0:00:21.7 | step: 400
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 1 |  99/278 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 8.41 | lr: 0.0002 | loss: 2.744 | time: 0:00:11.9 | step: 500
+epoch: 1 | 199/278 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 9.92 | lr: 0.0002 | loss: 2.833 | time: 0:00:22.0 | step: 600
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======

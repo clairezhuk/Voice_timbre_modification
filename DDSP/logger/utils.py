@@ -114,8 +114,8 @@ def load_model(
         else:
             path_pt = path+'best.pt'
         print(' [*] restoring model from', path_pt)
-        ckpt = torch.load(path_pt, map_location=torch.device(device))
-        global_step = ckpt['global_step']
+        ckpt = torch.load(path_pt, map_location=torch.device(device), weights_only=False)
+        global_step = ckpt.get('global_step', 0)
         model.load_state_dict(ckpt['model'], strict=False)
         if ckpt.get('optimizer') != None:
             optimizer.load_state_dict(ckpt['optimizer'])

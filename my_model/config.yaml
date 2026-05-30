@@ -1,0 +1,52 @@
+data:
+  block_size: 512
+  cnhubertsoft_gate: 10
+  duration: 2
+  encoder: contentvec768l12
+  encoder_ckpt: ../models/contentvec768l12.pt
+  encoder_hop_size: 320
+  encoder_out_channels: 768
+  encoder_sample_rate: 16000
+  extensions:
+  - wav
+  f0_extractor: rmvpe
+  f0_max: 800
+  f0_min: 65
+  sampling_rate: 44100
+  train_path: C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/data/dataset/train
+  valid_path: C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/data/dataset/val
+device: cuda
+env:
+  expdir: C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model
+  gpu_id: 0
+infer:
+  method: dpm-solver
+  speedup: 10
+model:
+  k_step_max: 100
+  n_chans: 512
+  n_layers: 6
+  n_spk: 1
+  type: DiffusionFast
+  use_pitch_aug: true
+  win_length: 2048
+train:
+  amp_dtype: fp32
+  batch_size: 1
+  cache_all_data: true
+  cache_device: cpu
+  cache_fp16: true
+  decay_step: 50000
+  epochs: 2
+  gamma: 0.5
+  interval_force_save: 1000
+  interval_log: 100
+  interval_val: 200
+  lambda_ddsp: 1
+  lr: 0.0002
+  num_workers: 0
+  save_opt: false
+  weight_decay: 0
+vocoder:
+  ckpt: C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/models/nsf_hifigan/model
+  type: nsf-hifigan
