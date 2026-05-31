@@ -21,7 +21,7 @@ env:
   gpu_id: 0
 infer:
   method: dpm-solver
-  speedup: 10
+  speedup: 5
 model:
   k_step_max: 100
   n_chans: 512
@@ -32,18 +32,18 @@ model:
   win_length: 2048
 train:
   amp_dtype: fp32
-  batch_size: 2
+  batch_size: 4
   cache_all_data: true
   cache_device: cpu
   cache_fp16: true
   decay_step: 50000
   epochs: 100000
   gamma: 0.5
-  interval_force_save: 500 #10000
-  interval_log: 100
-  interval_val: 200
+  interval_force_save: 1000 #10000
+  interval_log: 200
+  interval_val: 500
   lambda_ddsp: 1
-  lr: 0.0002
+  lr: 0.0001
   num_workers: 0
   save_opt: false
   weight_decay: 0
