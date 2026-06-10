@@ -75,6 +75,7 @@ class DDSPGenerator:
         content = F.interpolate(content, size=target_len, mode='linear', align_corners=False)
         content = content.transpose(1, 2).to(self.device)
 
+        spk_id = torch.LongTensor(np.array([[1]])).to(self.device)
         with torch.no_grad():
             generated_audio = self.model(
                 content, 
@@ -82,10 +83,11 @@ class DDSPGenerator:
                 volume_pt, 
                 vocoder=self.vocoder, 
                 infer=True, 
-                return_wav=True, 
-                infer_speedup=10,     
-                method='dpm-solver',    
-                k_step=1000           
+                return_wav=True,    
+                k_step=100,
+                spk_id=spk_id,   
+                infer_speedup=2,
+                method='dpm-solver',       
             )
             
         return generated_audio.squeeze().cpu().numpy()

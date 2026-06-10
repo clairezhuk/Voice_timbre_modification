@@ -82,7 +82,7 @@ class Trainer:
             infer_cmd = [
                 self.python_exe, "main_diff.py", 
                 "-i", wav_path, "-diff", checkpoint_path, 
-                "-o", output_wav, "-k", "0", "-id", "1", 
+                "-o", output_wav, "-k", "100", "-id", "1", 
                 "-speedup", self.speedup, "-method", self.method, "-kstep", self.kstep
             ]
             
