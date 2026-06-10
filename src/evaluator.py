@@ -23,17 +23,12 @@ class Evaluator:
         if len(ref_voiced) < 2 or len(gen_voiced) < 2:
             return 0.0
             
-        # 1. Переводимо Герци в логарифмічну шкалу (MIDI)
-        # Це робить зсув по висоті лінійним (просто додавання константи)
         ref_midi = librosa.hz_to_midi(ref_voiced)
         gen_midi = librosa.hz_to_midi(gen_voiced)
         
-        # 2. Нормалізація (Zero-mean)
-        # Робимо DTW "сліпим" до загальної висоти голосу (вирішує проблему pitch_shift)
         ref_norm = ref_midi - np.mean(ref_midi)
         gen_norm = gen_midi - np.mean(gen_midi)
         
-        # 3. DTW тепер порівнює тільки ФОРМУ мелодії
         distance, path = fastdtw(ref_norm.reshape(-1, 1), gen_norm.reshape(-1, 1), dist=euclidean)
         
         aligned_ref = np.array([ref_norm[i] for i, j in path])

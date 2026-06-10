@@ -8,14 +8,14 @@ def main():
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",
         "rmvpe": "voice_clone_project/models/model_0.pt",
-        "ddsp": "voice_clone_project/models/model_80000.pt",
+        "ddsp": "voice_clone_project/models/model_26000.pt",
         "hifigan": "voice_clone_project/models/nsf_hifigan/model",
-        "ddsp_config": "voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
+        "ddsp_config": 'voice_clone_project/my_model/config.yaml' #"voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
     SHIFT = 12
     TEST = 1
-    INPUT_PATH = f"voice_clone_project/data/input/test{TEST}_clean.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/output/output_test{TEST}_cl_{SHIFT}_tr0.wav"
+    INPUT_PATH = f"voice_clone_project/data/dataset/test/input/1_...Baby One More Time_(Vocals).wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/1_...Baby One More Time_(Vocals).wav"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
@@ -30,16 +30,15 @@ def main():
    
     # Evaluation
     evaluator = Evaluator(device)
-    content_output, f0_output, audio_output = extractor.extract_features("voice_clone_project/data/output/output_test.wav")
+    content_output, f0_output, audio_output = extractor.extract_features(OUTPUT_PATH)
     
-    # Використовуємо align_arrays, якщо масиви трохи відрізняються по довжині після генерації
     min_len_f0 = min(len(f0), len(f0_output))
     f0_pearson = evaluator.get_f0_pearson(f0[:min_len_f0], f0_output[:min_len_f0])
     
     min_len_audio = min(len(audio_44k), len(final_audio))
     rms_pearson = evaluator.get_rms_pearson(audio_44k[:min_len_audio], final_audio[:min_len_audio], sr=44100)
     
-    wer_score = evaluator.get_wer("voice_clone_project/data/input/test2.wav", "voice_clone_project/data/output/output_test.wav")
+    wer_score = evaluator.get_wer(INPUT_PATH, OUTPUT_PATH)
 
     print(f"Test completed.")
     print(f"F0 Pearson Corr (Closer to 1 is better): {f0_pearson:.4f}")

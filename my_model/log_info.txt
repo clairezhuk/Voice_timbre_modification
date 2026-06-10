@@ -508,3 +508,16 @@ epoch: 1086 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_c
 --- model size ---
 model: 16,940,680
 ======= start training =======
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 1096 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-05 | loss: 0.820 | time: 0:03:45.8 | step: 25250
+epoch: 1107 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-05 | loss: 0.833 | time: 0:07:26.6 | step: 25500
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 1118 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.14 | lr: 5e-05 | loss: 0.804 | time: 0:03:39.1 | step: 25750
+epoch: 1129 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.12 | lr: 5e-05 | loss: 0.727 | time: 0:07:21.8 | step: 26000
+--- model size ---
+model: 16,940,680
+======= start training =======

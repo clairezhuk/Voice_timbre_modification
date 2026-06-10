@@ -7,12 +7,11 @@ import librosa
 import numpy as np
 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-ddsp_svc_path = os.path.join(project_root, "DDSP_SVC_6")
+ddsp_svc_path = os.path.join(project_root, "DDSP")
 if ddsp_svc_path not in sys.path:
     sys.path.insert(0, ddsp_svc_path)
 
-from DDSP_SVC_6.reflow.vocoder import Unit2Wav
-from DDSP_SVC_6.reflow.vocoder import Vocoder 
+from DDSP.diffusion.vocoder import Unit2WavFast, Vocoder 
 
 class DictToDotDict(dict):
     def __getattr__(self, key):
@@ -26,27 +25,25 @@ class DictToDotDict(dict):
 class DDSPGenerator:
     def __init__(self, model_path, config_path, hifigan_path, device="cuda"):
         self.device = device
-        self.model = self._load_model(model_path, config_path)
+        with open(config_path, 'r', encoding='utf-8') as f:
+            self.config = DictToDotDict(yaml.safe_load(f))  
         self.vocoder = Vocoder("nsf-hifigan", hifigan_path, device)
+        self.model = self._load_model(model_path, config_path)
 
     def _load_model(self, model_path, config_path):
-        with open(config_path, 'r', encoding='utf-8') as f:
-            config = yaml.safe_load(f)
-            
-        config = DictToDotDict(config)
-
-        model = Unit2Wav(
-            sampling_rate=config.data.sampling_rate or 44100,
-            block_size=config.data.block_size or 512,
-            win_length=config.model.win_length or 1024,
-            n_unit=768, 
-            n_spk=config.model.n_spk or 1,
-            use_pitch_aug=config.model.use_pitch_aug or False,
-            out_dims=config.model.out_dims or 128,
-            n_layers=10,
-            n_chans=1024
+        model = Unit2WavFast(
+            sampling_rate=self.config.data.sampling_rate,
+            block_size=self.config.data.block_size,
+            win_length=self.config.model.win_length,
+            n_unit=self.config.data.encoder_out_channels or 768, 
+            n_spk=self.config.model.n_spk,
+            use_pitch_aug=self.config.model.use_pitch_aug,
+            out_dims=self.vocoder.dimension,  
+            n_layers=self.config.model.n_layers,
+            n_chans=self.config.model.n_chans
         )
         
+        print(f" [Loading Checkpoint] {model_path}")
         ckpt = torch.load(model_path, map_location=self.device)
         model.load_state_dict(ckpt['model'])
         
@@ -56,7 +53,7 @@ class DDSPGenerator:
         hop_size = 512
         target_len = len(audio_44k) // hop_size
         
-        # 1. F0 + Shift + Маска тиші
+        # 1. F0 + Shift + silence mask
         f0_shifted = f0 * (2 ** (shift / 12))
         
         time_16k = np.linspace(0, 1, len(f0_shifted))
@@ -69,7 +66,7 @@ class DDSPGenerator:
         
         f0_pt = torch.from_numpy(f0_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
         
-        # 2. Гучність
+        # 2. Volume
         volume = librosa.feature.rms(y=audio_44k, frame_length=1024, hop_length=hop_size)[0]
         volume_aligned = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
         volume_pt = torch.from_numpy(volume_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
@@ -80,12 +77,15 @@ class DDSPGenerator:
 
         with torch.no_grad():
             generated_audio = self.model(
-                content, f0_pt, volume_pt, 
+                content, 
+                f0_pt, 
+                volume_pt, 
                 vocoder=self.vocoder, 
                 infer=True, 
                 return_wav=True, 
-                infer_step=50, 
-                method='euler'
+                infer_speedup=10,     
+                method='dpm-solver',    
+                k_step=1000           
             )
             
         return generated_audio.squeeze().cpu().numpy()
