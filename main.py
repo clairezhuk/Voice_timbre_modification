@@ -18,15 +18,11 @@ def main(NAME = "1_T_5_Characters-01"):
     SHIFT = 0
     TEST = 1
     INPUT_PATH = f"voice_clone_project/data/dataset/test/input/{NAME}.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/or_{NAME}_lib_305_sh0.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/k0_{NAME}.wav"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
-    #content, f0, audio_44k = extractor.extract_features(INPUT_PATH) #
-        
     audio_44k, _ = librosa.load(INPUT_PATH, sr=44100)
-    # audio_16k = librosa.resample(audio_44k, orig_sr=44100, target_sr=16000)
-    # audio_pt = torch.from_numpy(audio_16k).unsqueeze(0).to(device)
     audio_pt_44k = torch.from_numpy(audio_44k).float().unsqueeze(0).to(device)
 
     encoder = Units_Encoder(
@@ -34,17 +30,14 @@ def main(NAME = "1_T_5_Characters-01"):
         encoder_ckpt=paths["hubert"], 
         device=device
     )  
-    #units = encoder.encode(audio_pt, sample_rate=16000, hop_size=320)
     units = encoder.encode(audio_pt_44k, sample_rate=44100, hop_size=512)
-    #content = units.transpose(1, 2) 
     f0_extractor = F0_Extractor(
         f0_extractor='rmvpe', 
-        sample_rate=44100,      # робоча частота DDSP
-        hop_size=512,           # block_size з конфігу
+        sample_rate=44100,      
+        hop_size=512,           
         f0_min=65, 
         f0_max=800
     )
-    #f0 = f0_extractor.extract(audio_16k, uv_interp=True, device=device)
     f0 = f0_extractor.extract(audio_44k, uv_interp=True, device=device)
 
     # Sintez + Vocoder
@@ -55,7 +48,6 @@ def main(NAME = "1_T_5_Characters-01"):
    
     # Evaluation
     evaluator = Evaluator(device)
-    #content_output, f0_output, audio_output = extractor.extract_features(OUTPUT_PATH) #
     audio_44k_out, _ = librosa.load(OUTPUT_PATH, sr=44100)
     audio_16k_out = librosa.resample(audio_44k_out, orig_sr=44100, target_sr=16000)
     f0_output = f0_extractor.extract(audio_16k_out, uv_interp=True, device=device)
@@ -74,6 +66,6 @@ def main(NAME = "1_T_5_Characters-01"):
     print(f"WER (Closer to 0 is better): {wer_score:.4f}")
 
 if __name__ == "__main__":
-    names = ["1_T_5_Characters-01", "1_...Baby One More Time_(Vocals)"]
+    names = ["S_6_Kickapoo-15","S_17_Wicked-01","3_Queen – Bohemian Rhapsody_(Vocals)", "1_Bring Me To Life_(Vocals)"]
     for name in names:
         main(name)

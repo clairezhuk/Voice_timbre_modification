@@ -52,38 +52,17 @@ class DDSPGenerator:
         return model.to(self.device).eval()
 
     def generate(self, content, f0, audio_44k, shift=0):
-        # hop_size = 512
-        # target_len = len(audio_44k) // hop_size
-        
-        # 1. F0 + Shift + silence mask
-        f0_shifted = f0 * (2 ** (shift / 12))
-        
-        # time_16k = np.linspace(0, 1, len(f0_shifted))
-        # time_44k = np.linspace(0, 1, target_len)
-        # uv_mask = (f0_shifted == 0).astype(float)
-        
-        # f0_aligned = np.interp(time_44k, time_16k, f0_shifted)
-        # uv_aligned = np.interp(time_44k, time_16k, uv_mask) > 0.5
-        # f0_aligned[uv_aligned] = 0.0
-        
-        # f0_pt = torch.from_numpy(f0_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+
+        # 1. F0 + Shift 
+        f0_shifted = f0 * (2 ** (shift / 12))  
         f0_pt = torch.from_numpy(f0_shifted).float().reshape(1, -1, 1).to(self.device)
 
         # 2. Volume
-        # volume = librosa.feature.rms(y=audio_44k, frame_length=1024, hop_length=hop_size)[0]
-        # volume_aligned = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
-        # volume_pt = torch.from_numpy(volume_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
         volume = self.volume_extractor.extract(audio_44k)
         volume_pt = torch.from_numpy(volume).float().reshape(1, -1, 1).to(self.device)
-        print(f"Content shape: {content.shape}") # Має бути [1, T_units, 768]
-        print(f"F0 shape: {f0_pt.shape}")       # Має бути [1, T_f0, 1]
-        print(f"Volume shape: {volume_pt.shape}") # Має бути [1, T_vol, 1]
         n_frames = min(content.shape[1], f0_pt.shape[1], volume_pt.shape[1])
 
         # 3. Content
-        # content = F.interpolate(content, size=target_len, mode='linear', align_corners=False)
-        # content = content.transpose(1, 2).to(self.device)
-
         content = content[:, :n_frames, :] # [1, T, 768]
         f0_pt = f0_pt[:, :n_frames, :]      # [1, T, 1]
         volume_pt = volume_pt[:, :n_frames, :] # [1, T, 1]
@@ -97,7 +76,7 @@ class DDSPGenerator:
                 vocoder=self.vocoder, 
                 infer=True, 
                 return_wav=True,    
-                k_step=100,
+                k_step=1000,
                 spk_id=spk_id,   
                 infer_speedup=1,
                 method='dpm-solver',       

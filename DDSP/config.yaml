@@ -23,7 +23,7 @@ infer:
   method: dpm-solver
   speedup: 2
 model:
-  k_step_max: 100
+  k_step_max: 1000
   n_chans: 512
   n_layers: 6
   n_spk: 1
@@ -40,10 +40,10 @@ train:
   epochs: 100000
   gamma: 0.5
   interval_force_save: 1000 #10000
-  interval_log: 250
-  interval_val: 500
+  interval_log: 50
+  interval_val: 100
   lambda_ddsp: 1
-  lr: 0.00001
+  lr: 0.000005
   num_workers: 0
   save_opt: false
   weight_decay: 0

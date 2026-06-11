@@ -7,6 +7,8 @@ from src.evaluator import Evaluator
 from logger import log_validation_metrics 
 import torch
 import numpy as np
+import librosa
+import yaml
 
 class Trainer:
     def __init__(self, config):
@@ -17,10 +19,13 @@ class Trainer:
         self.val_dir = os.path.abspath("./data/dataset/val/audio")
         self.log_file = config["paths"].get("current_log_file")
         self.python_exe = sys.executable 
+
+        with open(self.config_yaml, 'r', encoding='utf-8') as f:
+            self.ddsp_config = yaml.safe_load(f)
         
         self.speedup = "2"
         self.method = "dpm-solver"
-        self.kstep = "100"
+        self.kstep = "1000"
 
     def train(self):
         print(f"Starting training process in: {self.ddsp_dir}")
@@ -65,14 +70,22 @@ class Trainer:
         current_step = int(step_str) if step_str.isdigit() else 0
         
         f0_all, rms_all, wer_all = [], [], []
-
-        from src.feature_extractor import FeatureExtractor
+        
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        ddsp_svc_path = os.path.join(project_root, "DDSP")
+        if ddsp_svc_path not in sys.path:
+            sys.path.insert(0, ddsp_svc_path)
+        from DDSP.ddsp.vocoder import Units_Encoder, F0_Extractor
         from src.evaluator import Evaluator
         
-        extractor = FeatureExtractor(
-            self.config["paths"]["hubert"], 
-            self.config["paths"]["rmvpe"], 
-            self.config["device"]
+        encoder = Units_Encoder(
+            encoder=self.ddsp_config["data"]["encoder"], 
+            encoder_ckpt=self.config["paths"]["hubert"], 
+            device=self.config["device"]
+        )
+        f0_ext = F0_Extractor(
+            f0_extractor=self.ddsp_config["data"]["f0_extractor"],
+            sample_rate=44100, hop_size=512
         )
         evaluator = Evaluator(self.config["device"])
 
@@ -83,14 +96,17 @@ class Trainer:
                 self.python_exe, "main_diff.py", 
                 "-i", wav_path, "-diff", checkpoint_path, 
                 "-o", output_wav, "-k", "100", "-id", "1", 
-                "-speedup", self.speedup, "-method", self.method, "-kstep", self.kstep
+                "-speedup", "1", "-method", "dpm-solver", "-kstep", "100"
             ]
             
             subprocess.run(infer_cmd, cwd=self.ddsp_dir, stdout=subprocess.DEVNULL)
             
             if os.path.exists(output_wav):
-                _, f0_ref, audio_ref = extractor.extract_features(wav_path)
-                _, f0_gen, audio_gen = extractor.extract_features(output_wav)
+                audio_ref, _ = librosa.load(wav_path, sr=44100)
+                audio_gen, _ = librosa.load(output_wav, sr=44100)
+                
+                f0_ref = f0_ext.extract(audio_ref, uv_interp=True)
+                f0_gen = f0_ext.extract(audio_gen, uv_interp=True)
                 
                 f0_all.append(evaluator.get_f0_pearson(f0_ref, f0_gen))
                 rms_all.append(evaluator.get_rms_pearson(audio_ref, audio_gen))
@@ -101,6 +117,6 @@ class Trainer:
         log_validation_metrics(self.log_file, current_step, file_names, f0_all, rms_all, wer_all)
         print(f"[EVAL] Step {current_step} done. Avg WER: {np.mean(wer_all):.4f}")
         
-        del extractor, evaluator
+        del evaluator
         torch.cuda.empty_cache()
         print("=== VALIDATION COMPLETED. RETURNING TO TRAINING ===\n")
