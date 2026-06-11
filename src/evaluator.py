@@ -38,7 +38,6 @@ class Evaluator:
         return 0.0 if np.isnan(corr) else corr
 
     def get_rms_pearson(self, audio_ref, audio_gen, sr=44100):
-        """2. Метрика Динаміки (Гучність/Експресія)"""
         rms_ref = librosa.feature.rms(y=audio_ref)[0]
         rms_gen = librosa.feature.rms(y=audio_gen)[0]
         
@@ -51,7 +50,6 @@ class Evaluator:
         return 0.0 if np.isnan(corr) else corr
 
     def get_wer(self, ref_audio_path, gen_audio_path, language="en"):
-        """3. Метрика Фонем (Word Error Rate) - Bypass ffmpeg issue"""
         import librosa
         import jiwer
         

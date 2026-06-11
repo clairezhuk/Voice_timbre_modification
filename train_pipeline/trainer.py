@@ -18,7 +18,7 @@ class Trainer:
         self.log_file = config["paths"].get("current_log_file")
         self.python_exe = sys.executable 
         
-        self.speedup = "10"
+        self.speedup = "2"
         self.method = "dpm-solver"
         self.kstep = "100"
 

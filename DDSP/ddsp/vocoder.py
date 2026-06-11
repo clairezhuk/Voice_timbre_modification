@@ -34,7 +34,7 @@ class F0_Extractor:
         if f0_extractor == 'rmvpe':
             if 'rmvpe' not in F0_KERNEL :
                 from encoder.rmvpe import RMVPE
-                F0_KERNEL['rmvpe'] = RMVPE('pretrain/rmvpe/model.pt', hop_length=160)
+                F0_KERNEL['rmvpe'] = RMVPE(r'C:\Users\user\PERSONAL\zut\S3\voise_modification\voice_clone_project\DDSP\pretrain\rmvpe\model.pt', hop_length=160) #'pretrain/rmvpe/model.pt'
             self.rmvpe = F0_KERNEL['rmvpe']
         if f0_extractor == 'fcpe':
             self.device_fcpe = 'cuda' if torch.cuda.is_available() else 'cpu'

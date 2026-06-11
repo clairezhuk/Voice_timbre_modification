@@ -12,6 +12,7 @@ if ddsp_svc_path not in sys.path:
     sys.path.insert(0, ddsp_svc_path)
 
 from DDSP.diffusion.vocoder import Unit2WavFast, Vocoder 
+from DDSP.ddsp.vocoder import Volume_Extractor
 
 class DictToDotDict(dict):
     def __getattr__(self, key):
@@ -29,6 +30,7 @@ class DDSPGenerator:
             self.config = DictToDotDict(yaml.safe_load(f))  
         self.vocoder = Vocoder("nsf-hifigan", hifigan_path, device)
         self.model = self._load_model(model_path, config_path)
+        self.volume_extractor = Volume_Extractor(hop_size=512)
 
     def _load_model(self, model_path, config_path):
         model = Unit2WavFast(
@@ -50,30 +52,41 @@ class DDSPGenerator:
         return model.to(self.device).eval()
 
     def generate(self, content, f0, audio_44k, shift=0):
-        hop_size = 512
-        target_len = len(audio_44k) // hop_size
+        # hop_size = 512
+        # target_len = len(audio_44k) // hop_size
         
         # 1. F0 + Shift + silence mask
         f0_shifted = f0 * (2 ** (shift / 12))
         
-        time_16k = np.linspace(0, 1, len(f0_shifted))
-        time_44k = np.linspace(0, 1, target_len)
-        uv_mask = (f0_shifted == 0).astype(float)
+        # time_16k = np.linspace(0, 1, len(f0_shifted))
+        # time_44k = np.linspace(0, 1, target_len)
+        # uv_mask = (f0_shifted == 0).astype(float)
         
-        f0_aligned = np.interp(time_44k, time_16k, f0_shifted)
-        uv_aligned = np.interp(time_44k, time_16k, uv_mask) > 0.5
-        f0_aligned[uv_aligned] = 0.0
+        # f0_aligned = np.interp(time_44k, time_16k, f0_shifted)
+        # uv_aligned = np.interp(time_44k, time_16k, uv_mask) > 0.5
+        # f0_aligned[uv_aligned] = 0.0
         
-        f0_pt = torch.from_numpy(f0_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
-        
+        # f0_pt = torch.from_numpy(f0_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        f0_pt = torch.from_numpy(f0_shifted).float().reshape(1, -1, 1).to(self.device)
+
         # 2. Volume
-        volume = librosa.feature.rms(y=audio_44k, frame_length=1024, hop_length=hop_size)[0]
-        volume_aligned = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
-        volume_pt = torch.from_numpy(volume_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        # volume = librosa.feature.rms(y=audio_44k, frame_length=1024, hop_length=hop_size)[0]
+        # volume_aligned = np.interp(np.linspace(0, 1, target_len), np.linspace(0, 1, len(volume)), volume)
+        # volume_pt = torch.from_numpy(volume_aligned).float().unsqueeze(0).unsqueeze(-1).to(self.device)
+        volume = self.volume_extractor.extract(audio_44k)
+        volume_pt = torch.from_numpy(volume).float().reshape(1, -1, 1).to(self.device)
+        print(f"Content shape: {content.shape}") # Має бути [1, T_units, 768]
+        print(f"F0 shape: {f0_pt.shape}")       # Має бути [1, T_f0, 1]
+        print(f"Volume shape: {volume_pt.shape}") # Має бути [1, T_vol, 1]
+        n_frames = min(content.shape[1], f0_pt.shape[1], volume_pt.shape[1])
 
         # 3. Content
-        content = F.interpolate(content, size=target_len, mode='linear', align_corners=False)
-        content = content.transpose(1, 2).to(self.device)
+        # content = F.interpolate(content, size=target_len, mode='linear', align_corners=False)
+        # content = content.transpose(1, 2).to(self.device)
+
+        content = content[:, :n_frames, :] # [1, T, 768]
+        f0_pt = f0_pt[:, :n_frames, :]      # [1, T, 1]
+        volume_pt = volume_pt[:, :n_frames, :] # [1, T, 1]
 
         spk_id = torch.LongTensor(np.array([[1]])).to(self.device)
         with torch.no_grad():
@@ -86,7 +99,7 @@ class DDSPGenerator:
                 return_wav=True,    
                 k_step=100,
                 spk_id=spk_id,   
-                infer_speedup=2,
+                infer_speedup=1,
                 method='dpm-solver',       
             )
             
