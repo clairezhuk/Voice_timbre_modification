@@ -17,7 +17,7 @@ CONFIG = {
         "rmvpe": "./models/model_0.pt"
     },
     "training": {
-        "log_index": 8
+        "log_index": 9
     }
 }
 

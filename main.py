@@ -11,14 +11,14 @@ def main(NAME = "1_T_5_Characters-01"):
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",
         "rmvpe": "voice_clone_project/models/model_0.pt",
-        "ddsp": "voice_clone_project/models/model_30500.pt",
+        "ddsp": "voice_clone_project/models/model_33000.pt",
         "hifigan": "voice_clone_project/models/nsf_hifigan/model",
         "ddsp_config": 'voice_clone_project/my_model/config.yaml' #"voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
     SHIFT = 0
     TEST = 1
     INPUT_PATH = f"voice_clone_project/data/dataset/test/input/{NAME}.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/k0_{NAME}.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/330_{NAME}.wav"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
@@ -66,6 +66,6 @@ def main(NAME = "1_T_5_Characters-01"):
     print(f"WER (Closer to 0 is better): {wer_score:.4f}")
 
 if __name__ == "__main__":
-    names = ["S_6_Kickapoo-15","S_17_Wicked-01","3_Queen – Bohemian Rhapsody_(Vocals)", "1_Bring Me To Life_(Vocals)"]
+    names = ["S_6_Kickapoo-15","S_17_Wicked-01","Queen", "Bring Me To Life"]
     for name in names:
         main(name)

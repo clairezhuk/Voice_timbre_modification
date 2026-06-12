@@ -76,9 +76,9 @@ class DDSPGenerator:
                 vocoder=self.vocoder, 
                 infer=True, 
                 return_wav=True,    
-                k_step=1000,
+                k_step=400,
                 spk_id=spk_id,   
-                infer_speedup=1,
+                infer_speedup=2,
                 method='dpm-solver',       
             )
             

@@ -25,7 +25,7 @@ class Trainer:
         
         self.speedup = "2"
         self.method = "dpm-solver"
-        self.kstep = "1000"
+        self.kstep = "300"
 
     def train(self):
         print(f"Starting training process in: {self.ddsp_dir}")
@@ -95,8 +95,8 @@ class Trainer:
             infer_cmd = [
                 self.python_exe, "main_diff.py", 
                 "-i", wav_path, "-diff", checkpoint_path, 
-                "-o", output_wav, "-k", "100", "-id", "1", 
-                "-speedup", "1", "-method", "dpm-solver", "-kstep", "100"
+                "-o", output_wav, "-k", "400", "-id", "1", 
+                "-speedup", "4", "-method", "dpm-solver", "-kstep", "400"
             ]
             
             subprocess.run(infer_cmd, cwd=self.ddsp_dir, stdout=subprocess.DEVNULL)
