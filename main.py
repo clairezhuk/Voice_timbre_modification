@@ -9,7 +9,7 @@ import os
 
 def main(NAME = "1_T_5_Characters-01"):
     N = 36000
-    K_STEP = 500
+    K_STEP = 450
     device = "cuda"
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",

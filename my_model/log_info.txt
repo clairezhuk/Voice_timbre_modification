@@ -1117,3 +1117,73 @@ epoch: 1586 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_c
 model: 16,940,680
 ======= start training =======
 epoch: 1521 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.573 | time: 0:00:18.4 | step: 35020
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 1522 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.22 | lr: 5e-06 | loss: 0.628 | time: 0:00:16.9 | step: 35040
+epoch: 1523 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.31 | lr: 5e-06 | loss: 0.587 | time: 0:00:32.2 | step: 35060
+epoch: 1524 |  13/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.24 | lr: 5e-06 | loss: 0.650 | time: 0:00:48.4 | step: 35080
+epoch: 1525 |  10/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.24 | lr: 5e-06 | loss: 0.676 | time: 0:01:04.6 | step: 35100
+epoch: 1526 |   7/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.21 | lr: 5e-06 | loss: 0.557 | time: 0:01:21.0 | step: 35120
+epoch: 1527 |   4/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.22 | lr: 5e-06 | loss: 0.629 | time: 0:01:37.4 | step: 35140
+epoch: 1528 |   1/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.23 | lr: 5e-06 | loss: 0.617 | time: 0:01:53.6 | step: 35160
+epoch: 1528 |  21/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.16 | lr: 5e-06 | loss: 0.564 | time: 0:02:10.8 | step: 35180
+epoch: 1529 |  18/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.21 | lr: 5e-06 | loss: 0.643 | time: 0:02:27.3 | step: 35200
+epoch: 1530 |  15/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.20 | lr: 5e-06 | loss: 0.597 | time: 0:02:44.0 | step: 35220
+epoch: 1531 |  12/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.18 | lr: 5e-06 | loss: 0.637 | time: 0:03:01.0 | step: 35240
+epoch: 1532 |   9/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.19 | lr: 5e-06 | loss: 0.581 | time: 0:03:17.8 | step: 35260
+epoch: 1533 |   6/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.16 | lr: 5e-06 | loss: 0.647 | time: 0:03:35.0 | step: 35280
+epoch: 1534 |   3/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.18 | lr: 5e-06 | loss: 0.574 | time: 0:03:51.9 | step: 35300
+epoch: 1535 |   0/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.17 | lr: 5e-06 | loss: 0.656 | time: 0:04:09.1 | step: 35320
+epoch: 1535 |  20/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.16 | lr: 5e-06 | loss: 0.746 | time: 0:04:26.5 | step: 35340
+epoch: 1536 |  17/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.16 | lr: 5e-06 | loss: 0.601 | time: 0:04:43.6 | step: 35360
+epoch: 1537 |  14/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.690 | time: 0:05:01.4 | step: 35380
+epoch: 1538 |  11/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.708 | time: 0:05:19.0 | step: 35400
+epoch: 1539 |   8/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.650 | time: 0:05:36.8 | step: 35420
+epoch: 1540 |   5/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.15 | lr: 5e-06 | loss: 0.694 | time: 0:05:54.2 | step: 35440
+epoch: 1541 |   2/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.625 | time: 0:06:11.8 | step: 35460
+epoch: 1541 |  22/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.12 | lr: 5e-06 | loss: 0.685 | time: 0:06:29.4 | step: 35480
+epoch: 1542 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.716 | time: 0:06:47.3 | step: 35500
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 1543 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.05 | lr: 5e-06 | loss: 0.617 | time: 0:00:19.6 | step: 35520
+epoch: 1544 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.12 | lr: 5e-06 | loss: 0.697 | time: 0:00:37.4 | step: 35540
+epoch: 1545 |  13/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.597 | time: 0:00:55.5 | step: 35560
+epoch: 1546 |  10/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.629 | time: 0:01:13.3 | step: 35580
+epoch: 1547 |   7/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.566 | time: 0:01:31.1 | step: 35600
+epoch: 1548 |   4/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.12 | lr: 5e-06 | loss: 0.597 | time: 0:01:48.9 | step: 35620
+epoch: 1549 |   1/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.09 | lr: 5e-06 | loss: 0.580 | time: 0:02:07.2 | step: 35640
+epoch: 1549 |  21/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.10 | lr: 5e-06 | loss: 0.637 | time: 0:02:25.5 | step: 35660
+epoch: 1550 |  18/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.700 | time: 0:02:43.5 | step: 35680
+epoch: 1551 |  15/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.12 | lr: 5e-06 | loss: 0.577 | time: 0:03:01.4 | step: 35700
+epoch: 1552 |  12/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.10 | lr: 5e-06 | loss: 0.589 | time: 0:03:19.6 | step: 35720
+epoch: 1553 |   9/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.570 | time: 0:03:37.7 | step: 35740
+epoch: 1554 |   6/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.14 | lr: 5e-06 | loss: 0.582 | time: 0:03:55.3 | step: 35760
+epoch: 1555 |   3/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.641 | time: 0:04:13.0 | step: 35780
+epoch: 1556 |   0/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.584 | time: 0:04:31.0 | step: 35800
+epoch: 1556 |  20/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.10 | lr: 5e-06 | loss: 0.674 | time: 0:04:49.1 | step: 35820
+epoch: 1557 |  17/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.614 | time: 0:05:06.8 | step: 35840
+epoch: 1558 |  14/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.639 | time: 0:05:25.0 | step: 35860
+epoch: 1559 |  11/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.10 | lr: 5e-06 | loss: 0.580 | time: 0:05:43.1 | step: 35880
+epoch: 1560 |   8/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.535 | time: 0:06:01.1 | step: 35900
+epoch: 1561 |   5/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.613 | time: 0:06:18.8 | step: 35920
+epoch: 1562 |   2/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.603 | time: 0:06:36.8 | step: 35940
+epoch: 1562 |  22/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.574 | time: 0:06:54.6 | step: 35960
+epoch: 1563 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.662 | time: 0:07:12.9 | step: 35980
+epoch: 1564 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.630 | time: 0:07:30.5 | step: 36000
+--- model size ---
+model: 16,940,680
+======= start training =======
+epoch: 1565 |  19/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.12 | lr: 5e-06 | loss: 0.610 | time: 0:00:18.4 | step: 36020
+epoch: 1566 |  16/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.682 | time: 0:00:36.4 | step: 36040
+epoch: 1567 |  13/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.15 | lr: 5e-06 | loss: 0.679 | time: 0:00:53.8 | step: 36060
+epoch: 1568 |  10/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.680 | time: 0:01:11.7 | step: 36080
+epoch: 1569 |   7/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.631 | time: 0:01:29.3 | step: 36100
+epoch: 1570 |   4/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.614 | time: 0:01:47.1 | step: 36120
+epoch: 1571 |   1/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.14 | lr: 5e-06 | loss: 0.574 | time: 0:02:04.6 | step: 36140
+epoch: 1571 |  21/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.10 | lr: 5e-06 | loss: 0.705 | time: 0:02:22.8 | step: 36160
+epoch: 1572 |  18/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.14 | lr: 5e-06 | loss: 0.665 | time: 0:02:40.3 | step: 36180
+epoch: 1573 |  15/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.13 | lr: 5e-06 | loss: 0.622 | time: 0:02:58.0 | step: 36200
+epoch: 1574 |  12/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.11 | lr: 5e-06 | loss: 0.625 | time: 0:03:15.9 | step: 36220
+epoch: 1575 |   9/ 23 | C:/Users/user/PERSONAL/zut/S3/voise_modification/voice_clone_project/my_model | batch/s: 1.14 | lr: 5e-06 | loss: 0.609 | time: 0:03:33.5 | step: 36240
