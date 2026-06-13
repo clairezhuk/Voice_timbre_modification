@@ -5,20 +5,24 @@ import soundfile as sf
 from DDSP.ddsp.vocoder import Units_Encoder, F0_Extractor
 import torch
 import librosa
+import os
 
 def main(NAME = "1_T_5_Characters-01"):
+    N = 34000
+    K_STEP = 400
     device = "cuda"
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",
         "rmvpe": "voice_clone_project/models/model_0.pt",
-        "ddsp": "voice_clone_project/models/model_33000.pt",
+        "ddsp": f"voice_clone_project/models/model_{N}.pt",
         "hifigan": "voice_clone_project/models/nsf_hifigan/model",
         "ddsp_config": 'voice_clone_project/my_model/config.yaml' #"voice_clone_project/DDSP_SVC_6/configs/reflow.yaml"
     }
     SHIFT = 0
     TEST = 1
     INPUT_PATH = f"voice_clone_project/data/dataset/test/input/{NAME}.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/330_{NAME}.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/{N}_{NAME}.wav"
+    RES_PATH = f"voice_clone_project/data/dataset/test/output/metrics/{NAME}.csv"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
@@ -42,7 +46,7 @@ def main(NAME = "1_T_5_Characters-01"):
 
     # Sintez + Vocoder
     generator = DDSPGenerator(paths["ddsp"], paths["ddsp_config"], paths["hifigan"], device)
-    final_audio = generator.generate(units, f0, audio_44k, shift=SHIFT)
+    final_audio = generator.generate(units, f0, audio_44k, k_step=K_STEP, shift=SHIFT)
 
     sf.write(OUTPUT_PATH, final_audio.flatten(), 44100)
    
@@ -65,7 +69,15 @@ def main(NAME = "1_T_5_Characters-01"):
     print(f"RMS Pearson Corr (Closer to 1 is better): {rms_pearson:.4f}")
     print(f"WER (Closer to 0 is better): {wer_score:.4f}")
 
+    os.makedirs(os.path.dirname(RES_PATH), exist_ok=True)
+    file_exists = os.path.isfile(RES_PATH)
+    with open(RES_PATH, mode='a', encoding='utf-8') as f:
+        if not file_exists:
+            f.write("N,K_STEP,F0,RMS,WER\n")
+        f.write(f"{N},{K_STEP},{f0_pearson:.4f},{rms_pearson:.4f},{wer_score:.4f}\n")
+
 if __name__ == "__main__":
-    names = ["S_6_Kickapoo-15","S_17_Wicked-01","Queen", "Bring Me To Life"]
+    names = ["S_6_Kickapoo-15","Queen-01",
+             "Bring_Me_To_Life-01", "It`s_over_Anakin-01","Janet-01","Never_gona_give_you_up-01","Surprise-01","What_are_we_going_to_do-01"]
     for name in names:
         main(name)

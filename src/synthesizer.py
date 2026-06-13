@@ -51,7 +51,7 @@ class DDSPGenerator:
         
         return model.to(self.device).eval()
 
-    def generate(self, content, f0, audio_44k, shift=0):
+    def generate(self, content, f0, audio_44k, k_step=400, shift=0):
 
         # 1. F0 + Shift 
         f0_shifted = f0 * (2 ** (shift / 12))  
@@ -76,7 +76,7 @@ class DDSPGenerator:
                 vocoder=self.vocoder, 
                 infer=True, 
                 return_wav=True,    
-                k_step=400,
+                k_step=k_step,
                 spk_id=spk_id,   
                 infer_speedup=2,
                 method='dpm-solver',       
