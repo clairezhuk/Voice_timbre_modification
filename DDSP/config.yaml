@@ -43,7 +43,7 @@ train:
   interval_log: 20
   interval_val: 500
   lambda_ddsp: 1
-  lr: 0.00004
+  lr: 0.00002
   num_workers: 0
   save_opt: false
   weight_decay: 0

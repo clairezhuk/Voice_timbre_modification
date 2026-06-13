@@ -8,7 +8,7 @@ import librosa
 import os
 
 def main(NAME = "1_T_5_Characters-01"):
-    N = 10000
+    N = 21500
     K_STEP = 500
     device = "cuda"
     paths = {
