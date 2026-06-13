@@ -97,7 +97,7 @@ class Trainer:
                 self.python_exe, "main_diff.py", 
                 "-i", wav_path, "-diff", checkpoint_path, 
                 "-o", output_wav, "-k", current_k_max, "-id", "1", 
-                "-speedup", "4", "-method", "dpm-solver", "-kstep", current_k_max
+                "-speedup", "5", "-method", "dpm-solver", "-kstep", current_k_max
             ]
             
             subprocess.run(infer_cmd, cwd=self.ddsp_dir, stdout=subprocess.DEVNULL)
