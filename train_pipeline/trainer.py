@@ -25,7 +25,7 @@ class Trainer:
         
         self.speedup = "2"
         self.method = "dpm-solver"
-        self.kstep = "300"
+        self.kstep = self.ddsp_config["model"]["k_step_max"]
 
     def train(self):
         print(f"Starting training process in: {self.ddsp_dir}")
@@ -68,6 +68,7 @@ class Trainer:
 
         step_str = os.path.basename(checkpoint_path).replace("model_", "").replace(".pt", "")
         current_step = int(step_str) if step_str.isdigit() else 0
+        current_k_max = str(self.ddsp_config["model"]["k_step_max"])
         
         f0_all, rms_all, wer_all = [], [], []
         
@@ -95,8 +96,8 @@ class Trainer:
             infer_cmd = [
                 self.python_exe, "main_diff.py", 
                 "-i", wav_path, "-diff", checkpoint_path, 
-                "-o", output_wav, "-k", "400", "-id", "1", 
-                "-speedup", "4", "-method", "dpm-solver", "-kstep", "400"
+                "-o", output_wav, "-k", current_k_max, "-id", "1", 
+                "-speedup", "4", "-method", "dpm-solver", "-kstep", current_k_max
             ]
             
             subprocess.run(infer_cmd, cwd=self.ddsp_dir, stdout=subprocess.DEVNULL)

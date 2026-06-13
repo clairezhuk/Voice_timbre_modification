@@ -8,8 +8,8 @@ import librosa
 import os
 
 def main(NAME = "1_T_5_Characters-01"):
-    N = 34000
-    K_STEP = 400
+    N = 36000
+    K_STEP = 500
     device = "cuda"
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",
