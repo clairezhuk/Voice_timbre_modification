@@ -42,8 +42,8 @@ train:
   interval_force_save: 1000
   interval_log: 20
   interval_val: 500
-  lambda_ddsp: 2
-  lr: 5.0e-06
+  lambda_ddsp: 0.5
+  lr: 2.0e-06
   num_workers: 0
   save_opt: false
   weight_decay: 0

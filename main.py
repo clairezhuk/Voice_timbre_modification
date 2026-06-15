@@ -8,8 +8,8 @@ import librosa
 import os
 
 def main(NAME = "1_T_5_Characters-01"):
-    N = 83500
-    K_STEP = 800
+    N = 84500
+    K_STEP = 500
     device = "cuda"
     paths = {
         "hubert": "voice_clone_project/models/contentvec768l12.pt",
@@ -21,7 +21,7 @@ def main(NAME = "1_T_5_Characters-01"):
     SHIFT = 0
     TEST = 1
     INPUT_PATH = f"voice_clone_project/data/dataset/test/input/{NAME}.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/{N}_{NAME}_800.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/{N}_{NAME}.wav"
     RES_PATH = f"voice_clone_project/data/dataset/test/output/metrics/{NAME}.csv"
 
     # Ekstraction
