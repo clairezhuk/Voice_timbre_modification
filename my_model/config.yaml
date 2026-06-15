@@ -37,13 +37,13 @@ train:
   cache_device: cpu
   cache_fp16: true
   decay_step: 100000
-  epochs: 80000
+  epochs: 75000
   gamma: 0.5
   interval_force_save: 1000
   interval_log: 20
   interval_val: 500
   lambda_ddsp: 2
-  lr: 2.0e-05
+  lr: 1.0e-05
   num_workers: 0
   save_opt: false
   weight_decay: 0
