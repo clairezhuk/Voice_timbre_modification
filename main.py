@@ -7,8 +7,8 @@ import torch
 import librosa
 import os
 
-def main(NAME = "1_T_5_Characters-01"):
-    N = 100000
+def main(N=100000,NAME = "1_T_5_Characters-01"):
+    #N = 100000
     K_STEP = 500
     device = "cuda"
     paths = {
@@ -20,9 +20,9 @@ def main(NAME = "1_T_5_Characters-01"):
     }
     SHIFT = 0
     TEST = 1
-    INPUT_PATH = f"voice_clone_project/data/dataset/test/input/{NAME}.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/{N}_{NAME}.wav"
-    RES_PATH = f"voice_clone_project/data/dataset/test/output/metrics/{NAME}.csv"
+    INPUT_PATH = f"voice_clone_project/data/dataset/final_test/input/{NAME}.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/final_test/output/{NAME}_{int(N/1000)}k.wav"
+    RES_PATH = f"voice_clone_project/data/dataset/final_test/output/metrics/{NAME}.csv"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)
@@ -77,7 +77,14 @@ def main(NAME = "1_T_5_Characters-01"):
         f.write(f"{N},{K_STEP},{f0_pearson:.4f},{rms_pearson:.4f},{wer_score:.4f}\n")
 
 if __name__ == "__main__":
-    names = ["S_6_Kickapoo-15","Queen-01",
-             "Bring_Me_To_Life-01", "It`s_over_Anakin-01","Janet-01","Never_gona_give_you_up-01","Surprise-01","What_are_we_going_to_do-01"]
+    NN = [20000, 40000, 60000, 80000, 100000]
+    names = ["S_6_Kickapoo-15","S_9_Hope-02","Queen-01"]
     for name in names:
-        main(name)
+        for n in NN:
+            main(N=n, NAME = name)
+
+    test_names = ["Bring_Me_To_Life-01", "It`s_over_Anakin-01",
+             "Janet-01","Never_gona_give_you_up-01"]             
+    #"Surprise-01","What_are_we_going_to_do-01"]
+    for name in test_names:
+        main(N=100000, NAME=name)
