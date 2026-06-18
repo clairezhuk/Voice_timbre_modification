@@ -20,9 +20,9 @@ def main(N=100000,NAME = "1_T_5_Characters-01"):
     }
     SHIFT = 0
     TEST = 1
-    INPUT_PATH = f"voice_clone_project/data/dataset/final_test/input/{NAME}.wav"
-    OUTPUT_PATH = f"voice_clone_project/data/dataset/final_test/output/{NAME}_{int(N/1000)}k.wav"
-    RES_PATH = f"voice_clone_project/data/dataset/final_test/output/metrics/{NAME}.csv"
+    INPUT_PATH = f"voice_clone_project/data/dataset/test/input/{NAME}.wav"
+    OUTPUT_PATH = f"voice_clone_project/data/dataset/test/output/{NAME}_{int(N/1000)}k.wav"
+    RES_PATH = f"voice_clone_project/data/dataset/test/output/metrics/{NAME}.csv"
 
     # Ekstraction
     extractor = FeatureExtractor(paths["hubert"], paths["rmvpe"], device)

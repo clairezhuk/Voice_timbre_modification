@@ -29,8 +29,8 @@ def main():
     init_txt(log_file, model_size="16,940,680")
     CONFIG["paths"]["current_log_file"] = log_file
 
-    # print("=== STEP 1: Preprocessing ===")
-    # preprocess_dataset(CONFIG)
+    print("=== STEP 1: Preprocessing ===")
+    preprocess_dataset(CONFIG)
 
     print("\n=== STEP 2: Training ===")
     trainer = Trainer(CONFIG)
